@@ -1,6 +1,6 @@
 [build]
 builder = "nixpacks"
-buildCommand = "npm ci --force && npm run build"
+buildCommand = "rm -rf node_modules/.cache && npm ci --force && npm run build"
 nixpacks = { node-version = "21.7.3" }
 
 [deploy]
