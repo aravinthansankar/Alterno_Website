@@ -1,6 +1,7 @@
 [build]
 builder = "nixpacks"
 buildCommand = "npm install --legacy-peer-deps && npm run build"
+nixpacks = { node-version = "21.7.3" }
 
 [deploy]
 startCommand = "npm start"
