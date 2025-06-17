@@ -1,20 +1,39 @@
 "use client"
 
 import type React from "react"
-
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { EyeIcon, EyeOffIcon } from "lucide-react"
 import Link from "next/link"
+import { useRouter } from "next/navigation"
+import { toast } from "sonner"
+import { useSignInMutation } from "@/lib/store/services/authApi"
+import { useAppDispatch } from "@/lib/store/hooks"
+import { setUser } from "@/lib/store/slices/authSlice"
 
 export default function LoginForm() {
   const [showPassword, setShowPassword] = useState(false)
+  const router = useRouter()
+  const dispatch = useAppDispatch()
+  const [signIn, { isLoading }] = useSignInMutation()
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    // Handle login logic here
+
+    const formData = new FormData(e.target as HTMLFormElement)
+    const email = formData.get("email") as string
+    const password = formData.get("password") as string
+
+    try {
+      const result = await signIn({ email, password }).unwrap()
+      dispatch(setUser(result.user))
+      toast.success("Successfully logged in!")
+      router.push("/dashboard")
+    } catch (error: any) {
+      toast.error(error.error || "Failed to log in")
+    }
   }
 
   return (
@@ -23,6 +42,7 @@ export default function LoginForm() {
         <Label htmlFor="email">Email</Label>
         <Input
           id="email"
+          name="email"
           type="email"
           placeholder="your@email.com"
           required
@@ -40,6 +60,7 @@ export default function LoginForm() {
         <div className="relative">
           <Input
             id="password"
+            name="password"
             type={showPassword ? "text" : "password"}
             placeholder="••••••••"
             required
@@ -57,9 +78,10 @@ export default function LoginForm() {
 
       <Button
         type="submit"
+        disabled={isLoading}
         className="w-full bg-gradient-to-r from-purple-500 to-cyan-500 hover:from-purple-600 hover:to-cyan-600 text-white"
       >
-        Log In
+        {isLoading ? "Logging in..." : "Log In"}
       </Button>
 
       <div className="relative flex items-center justify-center">

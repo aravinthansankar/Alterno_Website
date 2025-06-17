@@ -1,20 +1,54 @@
 "use client"
 
 import type React from "react"
-
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Checkbox } from "@/components/ui/checkbox"
 import { EyeIcon, EyeOffIcon } from "lucide-react"
+import { useRouter } from "next/navigation"
+import { toast } from "sonner"
+import { useSignUpMutation } from "@/lib/store/services/authApi"
+import { useAppDispatch } from "@/lib/store/hooks"
+import { setUser } from "@/lib/store/slices/authSlice"
+import { sendEmailVerification } from "firebase/auth"
+import { auth } from "@/lib/firebase"
 
 export default function SignupForm() {
   const [showPassword, setShowPassword] = useState(false)
+  const router = useRouter()
+  const dispatch = useAppDispatch()
+  const [signUp, { isLoading }] = useSignUpMutation()
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    // Handle signup logic here
+
+    const formData = new FormData(e.target as HTMLFormElement)
+    const firstName = formData.get("firstName") as string
+    const lastName = formData.get("lastName") as string
+    const email = formData.get("email") as string
+    const password = formData.get("password") as string
+    const terms = formData.get("terms")
+
+    if (!terms) {
+      toast.error("Please accept the terms and conditions")
+      return
+    }
+
+    try {
+      const result = await signUp({ email, password, firstName, lastName }).unwrap()
+      dispatch(setUser(result.user))
+      
+      // Send verification email
+      if (auth.currentUser) {
+        await sendEmailVerification(auth.currentUser)
+      }
+      toast.success("Account created! Please check your email for verification.")
+      router.push("/verify-email")
+    } catch (error: any) {
+      toast.error(error.error || "Failed to create account")
+    }
   }
 
   return (
@@ -24,6 +58,7 @@ export default function SignupForm() {
           <Label htmlFor="firstName">First Name</Label>
           <Input
             id="firstName"
+            name="firstName"
             placeholder="John"
             required
             className="bg-slate-800/50 border-slate-700 focus:border-purple-500 text-white"
@@ -34,6 +69,7 @@ export default function SignupForm() {
           <Label htmlFor="lastName">Last Name</Label>
           <Input
             id="lastName"
+            name="lastName"
             placeholder="Doe"
             required
             className="bg-slate-800/50 border-slate-700 focus:border-purple-500 text-white"
@@ -45,6 +81,7 @@ export default function SignupForm() {
         <Label htmlFor="email">Email</Label>
         <Input
           id="email"
+          name="email"
           type="email"
           placeholder="your@email.com"
           required
@@ -57,9 +94,11 @@ export default function SignupForm() {
         <div className="relative">
           <Input
             id="password"
+            name="password"
             type={showPassword ? "text" : "password"}
             placeholder="••••••••"
             required
+            minLength={8}
             className="bg-slate-800/50 border-slate-700 focus:border-purple-500 text-white pr-10"
           />
           <button
@@ -74,7 +113,7 @@ export default function SignupForm() {
       </div>
 
       <div className="flex items-start space-x-2">
-        <Checkbox id="terms" />
+        <Checkbox id="terms" name="terms" required />
         <Label htmlFor="terms" className="text-sm leading-tight">
           I agree to the{" "}
           <a href="/terms" className="text-purple-400 hover:text-purple-300">
@@ -89,9 +128,10 @@ export default function SignupForm() {
 
       <Button
         type="submit"
+        disabled={isLoading}
         className="w-full bg-gradient-to-r from-purple-500 to-cyan-500 hover:from-purple-600 hover:to-cyan-600 text-white"
       >
-        Create Account
+        {isLoading ? "Creating Account..." : "Create Account"}
       </Button>
 
       <div className="relative flex items-center justify-center">
