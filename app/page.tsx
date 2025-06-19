@@ -1,3 +1,5 @@
+"use client"
+
 import Link from "next/link"
 import { ArrowRight, CheckCircle, Mic, Phone, Calendar } from "lucide-react"
 import FeatureCard from "@/components/feature-card"
@@ -7,8 +9,12 @@ import MobileAppSection from "@/components/mobile-app-section"
 import OmnichannelSection from "@/components/omnichannel-section"
 import PricingSection from "@/components/pricing-section"
 import HeroAnimationWrapper from "@/components/hero-animation-wrapper"
+import { useSelector } from "react-redux"
+import { RootState } from "@/lib/store"
 
 export default function Home() {
+  const { user } = useSelector((state: RootState) => state.auth)
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-slate-950 to-slate-900 text-white">
       <Navbar />
@@ -28,13 +34,23 @@ export default function Home() {
                 </p>
               </div>
               <div className="flex flex-col sm:flex-row gap-4">
-                <Link
-                  href="/signup"
-                  className="inline-flex items-center justify-center px-6 py-3 rounded-full bg-gradient-to-r from-purple-500 to-cyan-500 text-white font-medium shadow-lg shadow-purple-500/25 hover:shadow-xl hover:shadow-purple-500/30 transition-all duration-300"
-                >
-                  Get Started
-                  <ArrowRight className="ml-2 h-5 w-5" />
-                </Link>
+                {!user ? (
+                  <Link
+                    href="/signup"
+                    className="inline-flex items-center justify-center px-6 py-3 rounded-full bg-gradient-to-r from-purple-500 to-cyan-500 text-white font-medium shadow-lg shadow-purple-500/25 hover:shadow-xl hover:shadow-purple-500/30 transition-all duration-300"
+                  >
+                    Get Started
+                    <ArrowRight className="ml-2 h-5 w-5" />
+                  </Link>
+                ) : (
+                  <Link
+                    href="/dashboard"
+                    className="inline-flex items-center justify-center px-6 py-3 rounded-full bg-gradient-to-r from-purple-500 to-cyan-500 text-white font-medium shadow-lg shadow-purple-500/25 hover:shadow-xl hover:shadow-purple-500/30 transition-all duration-300"
+                  >
+                    Go to Dashboard
+                    <ArrowRight className="ml-2 h-5 w-5" />
+                  </Link>
+                )}
                 <Link
                   href="#how-it-works"
                   className="inline-flex items-center justify-center px-6 py-3 rounded-full bg-slate-800 text-white font-medium border border-slate-700 hover:bg-slate-700 transition-all duration-300"

@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { useAppSelector } from "@/lib/store/hooks";
 import { useGetUserStoresQuery } from "@/lib/store/services/onboardingApi";
 import { useRouter } from "next/navigation";
+import LogoutButton from "@/components/LogoutButton";
 import { 
   Instagram, 
   Facebook, 
@@ -80,13 +81,16 @@ export default function Dashboard() {
                 Welcome back, {user?.displayName || "User"}
               </p>
             </div>
-            <Button
-              onClick={() => router.push("/onboarding")}
-              className="bg-gradient-to-r from-purple-500 to-cyan-500 hover:from-purple-600 hover:to-cyan-600 text-white"
-            >
-              <Plus className="w-4 h-4 mr-2" />
-              Add New Store
-            </Button>
+            <div className="flex items-center space-x-4">
+              <Button
+                onClick={() => router.push("/onboarding")}
+                className="bg-gradient-to-r from-purple-500 to-cyan-500 hover:from-purple-600 hover:to-cyan-600 text-white"
+              >
+                <Plus className="w-4 h-4 mr-2" />
+                Add New Store
+              </Button>
+              <LogoutButton />
+            </div>
           </div>
 
           {/* Stores Overview */}

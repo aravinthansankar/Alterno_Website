@@ -1,6 +1,5 @@
 "use client"
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { User } from 'firebase/auth'
 
 interface SerializableUser {
   uid: string
@@ -15,6 +14,7 @@ interface AuthState {
   isAuthenticated: boolean
   loading: boolean
   isEmailVerified: boolean
+  isInitialized: boolean
 }
 
 const initialState: AuthState = {
@@ -22,29 +22,19 @@ const initialState: AuthState = {
   isAuthenticated: false,
   loading: true,
   isEmailVerified: false,
+  isInitialized: false,
 }
-
-const serializeUser = (user: User | null): SerializableUser | null => {
-  if (!user) return null;
-  return {
-    uid: user.uid,
-    email: user.email,
-    displayName: user.displayName,
-    emailVerified: user.emailVerified,
-    photoURL: user.photoURL,
-  };
-};
 
 const authSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
-    setUser: (state, action: PayloadAction<User | null>) => {
-      const serializedUser = serializeUser(action.payload);
-      state.user = serializedUser;
-      state.isAuthenticated = !!serializedUser;
-      state.isEmailVerified = serializedUser?.emailVerified ?? false;
+    setUser: (state, action: PayloadAction<SerializableUser | null>) => {
+      state.user = action.payload;
+      state.isAuthenticated = !!action.payload;
+      state.isEmailVerified = action.payload?.emailVerified ?? false;
       state.loading = false;
+      state.isInitialized = true;
     },
     setLoading: (state, action: PayloadAction<boolean>) => {
       state.loading = action.payload;
@@ -55,14 +45,18 @@ const authSlice = createSlice({
         state.user.emailVerified = action.payload;
       }
     },
+    setInitialized: (state, action: PayloadAction<boolean>) => {
+      state.isInitialized = action.payload;
+    },
     logout: (state) => {
       state.user = null;
       state.isAuthenticated = false;
       state.loading = false;
       state.isEmailVerified = false;
+      state.isInitialized = true;
     },
   },
 })
 
-export const { setUser, setLoading, setEmailVerified, logout } = authSlice.actions
+export const { setUser, setLoading, setEmailVerified, setInitialized, logout } = authSlice.actions
 export default authSlice.reducer 
