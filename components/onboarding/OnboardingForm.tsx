@@ -13,15 +13,17 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 
 // Import step components
 import BusinessTypeStep from "./steps/BusinessTypeStep";
+import SquareLoginStep from "./steps/SquareLoginStep";
 import StoreInfoStep from "./steps/StoreInfoStep";
-import ServiceSelectionStep from "./steps/ServiceSelectionStep";
+import ServiceSelectionStep from "./steps/ServiceSelectionStep"; 
 import ReviewStep from "./steps/ReviewStep";
 
 const steps = [
   { id: 1, title: "Business Type", component: BusinessTypeStep },
-  { id: 2, title: "Store Information", component: StoreInfoStep },
-  { id: 3, title: "Service Selection", component: ServiceSelectionStep },
-  { id: 4, title: "Review & Complete", component: ReviewStep },
+  { id: 2, title: "Square Login", component: SquareLoginStep },
+  { id: 3, title: "Store Information", component: StoreInfoStep },
+  { id: 4, title: "Service Selection", component: ServiceSelectionStep },
+  { id: 5, title: "Review & Complete", component: ReviewStep },
 ];
 
 export default function OnboardingForm() {
@@ -63,10 +65,19 @@ export default function OnboardingForm() {
         isValid = true;
         break;
       case 2:
+        // Square Login step - validate squareIntegration
+        const squareIntegration = getValues("squareIntegration");
+        if (!squareIntegration) {
+          toast.error("Please connect your Square account to continue");
+          return;
+        }
+        isValid = true;
+        break;
+      case 3:
         // Store Info step - validate store information fields
         isValid = await trigger(["storeName", "address", "phone", "email", "description"]);
         break;
-      case 3:
+      case 4:
         // Service Selection step - validate selectedServices
         const selectedServices = getValues("selectedServices");
         if (!selectedServices || selectedServices.length === 0) {
@@ -75,7 +86,7 @@ export default function OnboardingForm() {
         }
         isValid = true;
         break;
-      case 4:
+      case 5:
         // Review step - no validation needed
         isValid = true;
         break;
