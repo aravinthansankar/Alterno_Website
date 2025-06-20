@@ -3,19 +3,82 @@
 import { useFormContext } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import { CreditCard, ExternalLink } from "lucide-react";
+import { useState, useEffect } from "react";
+import { SquareTokenManager } from "@/lib/square/tokenManager";
 
 export default function SquareLoginStep() {
   const { setValue, watch } = useFormContext();
   const squareConnected = watch("squareIntegration");
+  const [isConnecting, setIsConnecting] = useState(false);
+  const [isChecking, setIsChecking] = useState(true);
+  const scopes = [
+    "APPOINTMENTS_READ"
+  ];
 
-  const handleSquareLogin = () => {
-    // TODO: Implement Square OAuth flow
-    // This would typically redirect to Square's OAuth endpoint
-    console.log("Connecting to Square...");
+  // Check for existing Square connection on component mount
+  useEffect(() => {
+    const checkExistingConnection = async () => {
+      try {
+        const isConnected = SquareTokenManager.isConnected();
+        if (isConnected) {
+          setValue("squareIntegration", true);
+        }
+      } catch (error) {
+        console.error('Error checking Square connection:', error);
+      } finally {
+        setIsChecking(false);
+      }
+    };
+
+    checkExistingConnection();
+  }, [setValue]);
+
+  const handleSquareLogin = async () => {
+    setIsConnecting(true);
     
-    // For now, we'll simulate a successful connection
-    setValue("squareIntegration", true);
+    try {
+      // Generate a random state for CSRF protection
+      const state = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+      
+      // Store state in sessionStorage for verification
+      sessionStorage.setItem('square_oauth_state', state);
+      
+      // Square OAuth parameters
+      const params = new URLSearchParams({
+        response_type: 'code',
+        client_id: process.env.NEXT_PUBLIC_SQUARE_CLIENT_ID || '',
+        redirect_uri: `${window.location.origin}/oauth/square/callback`,
+        scope: scopes.join('+'),
+        state: state
+      });
+      
+      // Redirect to Square's OAuth endpoint
+      window.location.href = `https://connect.squareupsandbox.com/oauth2/authorize?${params.toString()}`;
+    } catch (error) {
+      console.error('Error initiating Square OAuth:', error);
+      setIsConnecting(false);
+    }
   };
+
+  const handleDisconnect = () => {
+    SquareTokenManager.clearTokens();
+    setValue("squareIntegration", false);
+  };
+
+  if (isChecking) {
+    return (
+      <div className="space-y-6">
+        <div className="text-center">
+          <h3 className="text-lg font-semibold text-white mb-2">
+            Checking Square Connection...
+          </h3>
+          <p className="text-slate-400">
+            Please wait while we verify your Square integration status.
+          </p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6">
@@ -46,17 +109,28 @@ export default function SquareLoginStep() {
           </div>
           
           {squareConnected ? (
-            <div className="flex items-center space-x-2">
-              <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-              <span className="text-green-400 text-sm font-medium">Connected</span>
+            <div className="flex items-center space-x-4">
+              <div className="flex items-center space-x-2">
+                <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                <span className="text-green-400 text-sm font-medium">Connected</span>
+              </div>
+              <Button
+                onClick={handleDisconnect}
+                variant="outline"
+                size="sm"
+                className="border-red-500 text-red-400 hover:bg-red-500 hover:text-white"
+              >
+                Disconnect
+              </Button>
             </div>
           ) : (
             <Button
               onClick={handleSquareLogin}
+              disabled={isConnecting}
               className="bg-green-600 hover:bg-green-700 text-white"
             >
               <ExternalLink className="w-4 h-4 mr-2" />
-              Login with Square
+              {isConnecting ? "Connecting..." : "Login with Square"}
             </Button>
           )}
         </div>
