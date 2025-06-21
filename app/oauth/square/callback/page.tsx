@@ -3,11 +3,13 @@
 import { useEffect, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { CheckCircle, XCircle, Loader2 } from 'lucide-react';
-import { SquareTokenManager } from '@/lib/square/tokenManager';
+import { useAppSelector } from '@/lib/store/hooks';
+import { ClientSessionManager } from '@/lib/square/clientSessionManager';
 
 export default function SquareOAuthCallback() {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const { user } = useAppSelector((state) => state.auth);
   const [status, setStatus] = useState<'loading' | 'success' | 'error'>('loading');
   const [errorMessage, setErrorMessage] = useState('');
 
@@ -32,6 +34,12 @@ export default function SquareOAuthCallback() {
           return;
         }
 
+        if (!user?.uid) {
+          setStatus('error');
+          setErrorMessage('User not authenticated');
+          return;
+        }
+
         // Verify CSRF state
         const storedState = sessionStorage.getItem('square_oauth_state');
         if (state !== storedState) {
@@ -43,13 +51,27 @@ export default function SquareOAuthCallback() {
         // Clear the stored state
         sessionStorage.removeItem('square_oauth_state');
 
-        // Exchange code for tokens
+        // Get the current user's ID token for authentication
+        const { auth } = await import('@/lib/firebase');
+        const idToken = await auth.currentUser?.getIdToken();
+        
+        if (!idToken) {
+          setStatus('error');
+          setErrorMessage('Failed to get authentication token');
+          return;
+        }
+
+        // Exchange code for tokens (server-side)
         const response = await fetch('/api/square/exchange-token', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
+            'Authorization': `Bearer ${idToken}`,
           },
-          body: JSON.stringify({ code }),
+          body: JSON.stringify({ 
+            code,
+            // userId is now extracted from the JWT token on the server
+          }),
         });
 
         if (!response.ok) {
@@ -58,20 +80,16 @@ export default function SquareOAuthCallback() {
         }
 
         const data = await response.json();
-        
-        // Store tokens using the token manager
-        SquareTokenManager.setTokens({
-          access_token: data.access_token,
-          refresh_token: data.refresh_token,
-          merchant_id: data.merchant_id,
-          expires_at: data.expires_at,
-        });
+        console.log('Token exchange successful:', data);
+
+        // Store connection info on client (NO TOKENS)
+        ClientSessionManager.setSquareConnection(data.merchant_id);
 
         setStatus('success');
 
         // Redirect back to onboarding after a short delay
         setTimeout(() => {
-          router.push('/onboarding?step=2&square_connected=true');
+          router.push(`/onboarding?step=2&square_connected=true&merchant_id=${data.merchant_id}`);
         }, 2000);
 
       } catch (error) {
@@ -82,15 +100,15 @@ export default function SquareOAuthCallback() {
     };
 
     handleOAuthCallback();
-  }, [searchParams, router]);
+  }, [searchParams, router, user]);
 
   return (
     <div className="min-h-screen bg-slate-900 flex items-center justify-center">
-      <div className="bg-slate-800 rounded-lg p-8 max-w-md w-full mx-4">
+      <div className="bg-slate-800 p-8 rounded-lg shadow-xl max-w-md w-full mx-4">
         <div className="text-center">
           {status === 'loading' && (
             <>
-              <Loader2 className="w-12 h-12 text-blue-500 animate-spin mx-auto mb-4" />
+              <Loader2 className="h-12 w-12 text-purple-500 animate-spin mx-auto mb-4" />
               <h2 className="text-xl font-semibold text-white mb-2">
                 Connecting to Square...
               </h2>
@@ -102,19 +120,19 @@ export default function SquareOAuthCallback() {
 
           {status === 'success' && (
             <>
-              <CheckCircle className="w-12 h-12 text-green-500 mx-auto mb-4" />
+              <CheckCircle className="h-12 w-12 text-green-500 mx-auto mb-4" />
               <h2 className="text-xl font-semibold text-white mb-2">
                 Successfully Connected!
               </h2>
               <p className="text-slate-400">
-                Your Square account has been connected successfully. Redirecting you back...
+                Your Square account has been successfully connected. Redirecting...
               </p>
             </>
           )}
 
           {status === 'error' && (
             <>
-              <XCircle className="w-12 h-12 text-red-500 mx-auto mb-4" />
+              <XCircle className="h-12 w-12 text-red-500 mx-auto mb-4" />
               <h2 className="text-xl font-semibold text-white mb-2">
                 Connection Failed
               </h2>
@@ -122,10 +140,10 @@ export default function SquareOAuthCallback() {
                 {errorMessage}
               </p>
               <button
-                onClick={() => router.push('/onboarding?step=2')}
-                className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg"
+                onClick={() => router.push('/onboarding')}
+                className="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg transition-colors"
               >
-                Try Again
+                Return to Onboarding
               </button>
             </>
           )}

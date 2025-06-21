@@ -4,24 +4,30 @@ import { useFormContext } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import { CreditCard, ExternalLink } from "lucide-react";
 import { useState, useEffect } from "react";
-import { SquareTokenManager } from "@/lib/square/tokenManager";
+import { useAppSelector } from "@/lib/store/hooks";
+import { db } from "@/lib/firebase";
+import { collection, query, where, getDocs } from "firebase/firestore";
 
 export default function SquareLoginStep() {
   const { setValue, watch } = useFormContext();
+  const { user } = useAppSelector((state) => state.auth);
   const squareConnected = watch("squareIntegration");
   const [isConnecting, setIsConnecting] = useState(false);
   const [isChecking, setIsChecking] = useState(true);
-  const scopes = [
-    "APPOINTMENTS_READ"
-  ];
 
   // Check for existing Square connection on component mount
   useEffect(() => {
     const checkExistingConnection = async () => {
       try {
-        const isConnected = SquareTokenManager.isConnected();
-        if (isConnected) {
-          setValue("squareIntegration", true);
+        if (user?.uid) {
+          // Check if user has any Square merchant documents
+          const storesRef = collection(db, 'users', user.uid, 'stores');
+          const squareQuery = query(storesRef, where('merchant_id', '!=', null));
+          const querySnapshot = await getDocs(squareQuery);
+          
+          if (!querySnapshot.empty) {
+            setValue("squareIntegration", true);
+          }
         }
       } catch (error) {
         console.error('Error checking Square connection:', error);
@@ -31,12 +37,16 @@ export default function SquareLoginStep() {
     };
 
     checkExistingConnection();
-  }, [setValue]);
+  }, [setValue, user]);
 
   const handleSquareLogin = async () => {
     setIsConnecting(true);
     
     try {
+      if (!user?.uid) {
+        throw new Error('User not authenticated');
+      }
+
       // Generate a random state for CSRF protection
       const state = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
       
@@ -48,8 +58,8 @@ export default function SquareLoginStep() {
         response_type: 'code',
         client_id: process.env.NEXT_PUBLIC_SQUARE_CLIENT_ID || '',
         redirect_uri: `${window.location.origin}/oauth/square/callback`,
-        scope: scopes.join('+'),
-        state: state
+        scope: scopes.join(' '),
+        state: state,
       });
       
       // Redirect to Square's OAuth endpoint
@@ -60,10 +70,32 @@ export default function SquareLoginStep() {
     }
   };
 
-  const handleDisconnect = () => {
-    SquareTokenManager.clearTokens();
-    setValue("squareIntegration", false);
+  const handleDisconnect = async () => {
+    try {
+      if (user?.uid) {
+        // Find and delete all Square merchant documents
+        const storesRef = collection(db, 'users', user.uid, 'stores');
+        const squareQuery = query(storesRef, where('merchant_id', '!=', null));
+        const querySnapshot = await getDocs(squareQuery);
+        
+        // Delete each Square merchant document
+        const deletePromises = querySnapshot.docs.map(doc => doc.ref.delete());
+        await Promise.all(deletePromises);
+      }
+      setValue("squareIntegration", false);
+    } catch (error) {
+      console.error('Error disconnecting Square:', error);
+    }
   };
+
+  const scopes = [
+    "APPOINTMENTS_READ",
+    "APPOINTMENTS_WRITE",
+    "APPOINTMENTS_ALL_READ",
+    "APPOINTMENTS_BUSINESS_SETTINGS_READ",
+    "CUSTOMERS_READ",
+    "CUSTOMERS_WRITE"
+  ];
 
   if (isChecking) {
     return (
