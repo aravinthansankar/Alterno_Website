@@ -72,12 +72,56 @@ export async function POST(request: NextRequest) {
 
       const tokenData = await tokenResponse.json();
       console.log('Token exchange successful', tokenData);
-      console.log('Token data received:', {
-        hasAccessToken: !!tokenData.access_token,
-        hasRefreshToken: !!tokenData.refresh_token,
-        hasMerchantId: !!tokenData.merchant_id,
-        expiresAt: tokenData.expires_at,
-      });
+      // ------------------------------------------------------------------
+      // NEW: Fetch locations to get MCC and validate supported categories
+      // ------------------------------------------------------------------
+      let isSupportedBusiness = false;
+      let detectedMcc: string | undefined;
+      try {
+        const locationsResp = await fetch('https://connect.squareupsandbox.com/v2/locations', {
+          method: 'GET',
+          headers: {
+            'Authorization': `Bearer ${tokenData.access_token}`,
+            'Square-Version': '2024-01-17',
+            'Content-Type': 'application/json',
+          },
+        });
+
+        if (locationsResp.ok) {
+          const locJson: any = await locationsResp.json();
+          const mcc =
+            locJson?.location?.mcc || // single location payload
+            (Array.isArray(locJson?.locations) && locJson.locations.length > 0
+              ? locJson.locations[0].mcc
+              : undefined);
+          detectedMcc = mcc;
+          const supportedMcc = [
+            '7230', // Beauty Shops
+            '7297', // Massage Parlors
+            '7298', // Health and Beauty Spas
+            '7399', // Business Services (Misc.)
+            '5812', // Restaurants
+            '5814', // Fast Food Restaurants
+            '7299'
+          ];
+          if (mcc && supportedMcc.includes(mcc)) {
+            isSupportedBusiness = true;
+          }
+        } else {
+          console.warn('Failed to fetch locations for MCC check', await locationsResp.text());
+        }
+      } catch (locErr) {
+        console.error('Error while fetching locations:', locErr);
+      }
+
+      if (!isSupportedBusiness) {
+        console.log('Unsupported MCC detected:', detectedMcc);
+        // Do NOT store tokens; inform client
+        return NextResponse.json({
+          supported: false,
+          mcc: detectedMcc,
+        });
+      }
 
       // Use Square's provided expires_at, with fallback if needed
       let expiresAt: string;
@@ -109,6 +153,7 @@ export async function POST(request: NextRequest) {
       // Return ONLY non-sensitive data to client
       return NextResponse.json({
         success: true,
+        supported: true,
         message: 'Square integration completed successfully',
         merchant_id: tokenData.merchant_id,
         // ❌ DON'T return tokens to client - they're stored server-side

@@ -10,7 +10,7 @@ export default function SquareOAuthCallback() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const { user } = useAppSelector((state) => state.auth);
-  const [status, setStatus] = useState<'loading' | 'success' | 'error'>('loading');
+  const [status, setStatus] = useState<'loading' | 'verifying' | 'success' | 'unsupported' | 'error'>('loading');
   const [errorMessage, setErrorMessage] = useState('');
 
   useEffect(() => {
@@ -34,9 +34,9 @@ export default function SquareOAuthCallback() {
           return;
         }
 
+        // Wait until Firebase auth has provided a user object
         if (!user?.uid) {
-          setStatus('error');
-          setErrorMessage('User not authenticated');
+          // user not yet loaded, keep waiting
           return;
         }
 
@@ -62,6 +62,7 @@ export default function SquareOAuthCallback() {
         }
 
         // Exchange code for tokens (server-side)
+        setStatus('verifying');
         const response = await fetch('/api/square/exchange-token', {
           method: 'POST',
           headers: {
@@ -80,17 +81,20 @@ export default function SquareOAuthCallback() {
         }
 
         const data = await response.json();
-        console.log('Token exchange successful:', data);
+        console.log('Token exchange response:', data);
+
+        if (data.supported === false) {
+          // Business type not supported
+          setStatus('unsupported');
+          return;
+        }
 
         // Store connection info on client (NO TOKENS)
         ClientSessionManager.setSquareConnection(data.merchant_id);
 
         setStatus('success');
 
-        // Redirect back to onboarding after a short delay
-        setTimeout(() => {
-          router.push(`/onboarding?step=2&square_connected=true&merchant_id=${data.merchant_id}`);
-        }, 2000);
+        // No auto redirect; user can proceed via button
 
       } catch (error) {
         console.error('OAuth callback error:', error);
@@ -118,15 +122,59 @@ export default function SquareOAuthCallback() {
             </>
           )}
 
+          {status === 'verifying' && (
+            <>
+              <Loader2 className="h-12 w-12 text-purple-500 animate-spin mx-auto mb-4" />
+              <h2 className="text-xl font-semibold text-white mb-2">
+                Validating your business...
+              </h2>
+              <p className="text-slate-400">
+                Hang tight while we confirm your business type.
+              </p>
+            </>
+          )}
+
           {status === 'success' && (
             <>
               <CheckCircle className="h-12 w-12 text-green-500 mx-auto mb-4" />
               <h2 className="text-xl font-semibold text-white mb-2">
-                Successfully Connected!
+                Auth complete
               </h2>
-              <p className="text-slate-400">
-                Your Square account has been successfully connected. Redirecting...
+              <p className="text-slate-400 mb-4">
+                Your Square account is now connected.
               </p>
+              <button
+                onClick={() => router.push('/dashboard')}
+                className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg transition-colors"
+              >
+                Go to Dashboard
+              </button>
+            </>
+          )}
+
+          {status === 'unsupported' && (
+            <>
+              <XCircle className="h-12 w-12 text-yellow-500 mx-auto mb-4" />
+              <h2 className="text-xl font-semibold text-white mb-2">
+                Unsupported Business Type
+              </h2>
+              <p className="text-slate-400 mb-4">
+                We do not currently support this type of business.
+              </p>
+              <div className="flex gap-3 justify-center">
+                <button
+                  onClick={() => window.location.href = 'mailto:support@voice.ai?subject=Unsupported%20Business%20Type'}
+                  className="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg transition-colors"
+                >
+                  Contact Support
+                </button>
+                <button
+                  onClick={() => router.push('/')}
+                  className="bg-slate-600 hover:bg-slate-700 text-white px-4 py-2 rounded-lg transition-colors"
+                >
+                  Exit
+                </button>
+              </div>
             </>
           )}
 

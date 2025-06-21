@@ -94,7 +94,8 @@ export default function SquareLoginStep() {
     "APPOINTMENTS_ALL_READ",
     "APPOINTMENTS_BUSINESS_SETTINGS_READ",
     "CUSTOMERS_READ",
-    "CUSTOMERS_WRITE"
+    "CUSTOMERS_WRITE",
+    "MERCHANT_PROFILE_READ"
   ];
 
   if (isChecking) {
