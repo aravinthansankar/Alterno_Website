@@ -3,12 +3,14 @@ import { configureStore } from '@reduxjs/toolkit'
 import { setupListeners } from '@reduxjs/toolkit/query'
 import { authApi } from './services/authApi'
 import { onboardingApi } from './services/onboardingApi'
+import { squareApi } from './services/squareApi'
 import authReducer from './slices/authSlice'
 
 export const store = configureStore({
   reducer: {
     [authApi.reducerPath]: authApi.reducer,
     [onboardingApi.reducerPath]: onboardingApi.reducer,
+    [squareApi.reducerPath]: squareApi.reducer,
     auth: authReducer,
   },
   middleware: (getDefaultMiddleware) =>
@@ -48,7 +50,7 @@ export const store = configureStore({
           `${onboardingApi.reducerPath}.mutations`,
         ],
       },
-    }).concat(authApi.middleware, onboardingApi.middleware),
+    }).concat(authApi.middleware, onboardingApi.middleware, squareApi.middleware),
 })
 
 setupListeners(store.dispatch)
