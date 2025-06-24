@@ -369,7 +369,7 @@ export default function DashboardContent({
         </div>
         
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-0">
-          {/* Daily Activity Chart */}
+        {/* Daily Activity Chart */}
           <div className="p-6 border-r border-slate-700">
             <h3 className="text-lg font-semibold text-white mb-4">Daily Activity</h3>
             <ChartContainer
@@ -425,7 +425,7 @@ export default function DashboardContent({
             </ChartContainer>
           </div>
 
-          {/* Platform Distribution */}
+        {/* Platform Distribution */}
           <div className="p-6">
             <h3 className="text-lg font-semibold text-white mb-4">Platform Distribution</h3>
             <div className="space-y-4">

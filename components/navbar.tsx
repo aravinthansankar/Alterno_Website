@@ -11,43 +11,43 @@ export default function Navbar() {
   const { user } = useSelector((state: RootState) => state.auth)
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-slate-950/80 backdrop-blur-md border-b border-slate-800">
+    <header className="fixed top-0 left-0 right-0 z-50 bg-white/90 backdrop-blur-md border-b border-slate-200">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           <div className="flex items-center">
             <Link href="/" className="flex items-center">
-              <span className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-cyan-400">
-                Voiceflow
+              <span className="text-2xl font-bold text-slate-900">
+                Alterno
               </span>
             </Link>
           </div>
 
           <nav className="hidden md:flex items-center space-x-8">
-            <Link href="#omnichannel" className="text-slate-300 hover:text-white transition-colors">
+            <Link href="#features" className="text-slate-600 hover:text-slate-900 transition-colors">
               Features
             </Link>
-            <Link href="#how-it-works" className="text-slate-300 hover:text-white transition-colors">
-              How It Works
+            <Link href="#integrations" className="text-slate-600 hover:text-slate-900 transition-colors">
+              Integrations
             </Link>
-            <Link href="#pricing" className="text-slate-300 hover:text-white transition-colors">
+            <Link href="#pricing" className="text-slate-600 hover:text-slate-900 transition-colors">
               Pricing
             </Link>
             {!user ? (
               <>
-                <Link href="/login" className="text-slate-300 hover:text-white transition-colors">
+                <Link href="/login" className="text-slate-600 hover:text-slate-900 transition-colors">
                   Log In
                 </Link>
                 <Link
                   href="/signup"
-                  className="px-4 py-2 rounded-full bg-gradient-to-r from-purple-500 to-cyan-500 text-white font-medium hover:shadow-lg hover:shadow-purple-500/25 transition-all duration-300"
+                  className="px-4 py-2 rounded-lg bg-red-600 text-white font-medium hover:bg-red-700 transition-all duration-200"
                 >
-                  Sign Up
+                  Join Early Bird List
                 </Link>
               </>
             ) : (
               <Link
                 href="/dashboard"
-                className="px-4 py-2 rounded-full bg-gradient-to-r from-purple-500 to-cyan-500 text-white font-medium hover:shadow-lg hover:shadow-purple-500/25 transition-all duration-300"
+                className="px-4 py-2 rounded-lg bg-red-600 text-white font-medium hover:bg-red-700 transition-all duration-200"
               >
                 Dashboard
               </Link>
@@ -55,7 +55,7 @@ export default function Navbar() {
           </nav>
 
           <div className="md:hidden">
-            <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="text-slate-300 hover:text-white">
+            <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="text-slate-600 hover:text-slate-900">
               {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
             </button>
           </div>
@@ -64,25 +64,25 @@ export default function Navbar() {
 
       {/* Mobile menu */}
       {isMenuOpen && (
-        <div className="md:hidden bg-slate-900 border-b border-slate-800">
+        <div className="md:hidden bg-white border-b border-slate-200">
           <div className="container mx-auto px-4 py-4 space-y-4">
             <Link
-              href="#omnichannel"
-              className="block text-slate-300 hover:text-white transition-colors"
+              href="#features"
+              className="block text-slate-600 hover:text-slate-900 transition-colors"
               onClick={() => setIsMenuOpen(false)}
             >
               Features
             </Link>
             <Link
-              href="#how-it-works"
-              className="block text-slate-300 hover:text-white transition-colors"
+              href="#integrations"
+              className="block text-slate-600 hover:text-slate-900 transition-colors"
               onClick={() => setIsMenuOpen(false)}
             >
-              How It Works
+              Integrations
             </Link>
             <Link
               href="#pricing"
-              className="block text-slate-300 hover:text-white transition-colors"
+              className="block text-slate-600 hover:text-slate-900 transition-colors"
               onClick={() => setIsMenuOpen(false)}
             >
               Pricing
@@ -91,23 +91,23 @@ export default function Navbar() {
               <>
                 <Link
                   href="/login"
-                  className="block text-slate-300 hover:text-white transition-colors"
+                  className="block text-slate-600 hover:text-slate-900 transition-colors"
                   onClick={() => setIsMenuOpen(false)}
                 >
                   Log In
                 </Link>
                 <Link
                   href="/signup"
-                  className="block px-4 py-2 rounded-full bg-gradient-to-r from-purple-500 to-cyan-500 text-white font-medium hover:shadow-lg hover:shadow-purple-500/25 transition-all duration-300 w-full text-center"
+                  className="block px-4 py-2 rounded-lg bg-red-600 text-white font-medium hover:bg-red-700 transition-all duration-200 w-full text-center"
                   onClick={() => setIsMenuOpen(false)}
                 >
-                  Sign Up
+                  Join Early Bird List
                 </Link>
               </>
             ) : (
               <Link
                 href="/dashboard"
-                className="block px-4 py-2 rounded-full bg-gradient-to-r from-purple-500 to-cyan-500 text-white font-medium hover:shadow-lg hover:shadow-purple-500/25 transition-all duration-300 w-full text-center"
+                className="block px-4 py-2 rounded-lg bg-red-600 text-white font-medium hover:bg-red-700 transition-all duration-200 w-full text-center"
                 onClick={() => setIsMenuOpen(false)}
               >
                 Dashboard
