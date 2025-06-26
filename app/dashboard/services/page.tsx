@@ -52,14 +52,6 @@ export default function ServiceLinkPage() {
       color: "from-purple-500 to-indigo-600",
       features: ["Voice calls", "Automated bookings", "24/7 support"],
     },
-    {
-      name: "YourMenu",
-      icon: Menu,
-      description: "Digital menu and ordering system integration for restaurants and cafes",
-      connected: false,
-      color: "from-orange-500 to-red-500",
-      features: ["Digital menus", "Online ordering", "Payment processing"],
-    },
   ]);
 
   const handleConnect = (serviceName: string) => {
@@ -83,50 +75,6 @@ export default function ServiceLinkPage() {
           Connect your business to multiple platforms for seamless customer communication
         </p>
       </div>
-
-      {/* Connection Status */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Link className="h-5 w-5" />
-            Connection Status
-          </CardTitle>
-          <CardDescription>
-            Overview of your connected services and integration status
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div className="flex items-center gap-3 p-4 rounded-lg border">
-              <div className="p-2 rounded-lg bg-green-100 dark:bg-green-900">
-                <CheckCircle2 className="h-5 w-5 text-green-600" />
-              </div>
-              <div>
-                <div className="text-lg font-semibold">{connectedCount}</div>
-                <div className="text-sm text-muted-foreground">Connected</div>
-              </div>
-            </div>
-            <div className="flex items-center gap-3 p-4 rounded-lg border">
-              <div className="p-2 rounded-lg bg-orange-100 dark:bg-orange-900">
-                <AlertCircle className="h-5 w-5 text-orange-600" />
-              </div>
-              <div>
-                <div className="text-lg font-semibold">{services.length - connectedCount}</div>
-                <div className="text-sm text-muted-foreground">Pending</div>
-              </div>
-            </div>
-            <div className="flex items-center gap-3 p-4 rounded-lg border">
-              <div className="p-2 rounded-lg bg-blue-100 dark:bg-blue-900">
-                <Link className="h-5 w-5 text-blue-600" />
-              </div>
-              <div>
-                <div className="text-lg font-semibold">{services.length}</div>
-                <div className="text-sm text-muted-foreground">Total Available</div>
-              </div>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
 
       {/* Services Grid */}
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
@@ -154,20 +102,7 @@ export default function ServiceLinkPage() {
               </div>
             </CardHeader>
             <CardContent className="space-y-4">
-              <div className="space-y-2">
-                <h4 className="text-sm font-medium text-muted-foreground">Features:</h4>
-                <ul className="space-y-1">
-                  {service.features.map((feature, index) => (
-                    <li key={index} className="flex items-center gap-2 text-sm">
-                      <div className="w-1.5 h-1.5 rounded-full bg-primary"></div>
-                      {feature}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-              
               <Separator />
-              
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
                   {service.connected ? (

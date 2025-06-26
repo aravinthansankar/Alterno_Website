@@ -74,11 +74,11 @@ export const authApi = createApi({
         }
       },
     }),
-    signOut: builder.mutation<void, void>({
+    signOut: builder.mutation<boolean, void>({
       queryFn: async () => {
         try {
           await signOut(auth);
-          return { data: undefined };
+          return { data: true };
         } catch (error: any) {
           return { error: { status: 'CUSTOM_ERROR', error: error.message } };
         }

@@ -47,8 +47,20 @@ interface DashboardLayoutProps {
 
 export default function DashboardLayout({ children }: DashboardLayoutProps) {
   const router = useRouter();
-  const { user } = useAppSelector((state) => state.auth);
+  const { user, isInitialized } = useAppSelector((state) => state.auth);
   const [signOut] = useSignOutMutation();
+
+  // Don't render until auth is initialized to prevent hydration mismatch
+  if (!isInitialized) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-slate-900">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-purple-500 mx-auto mb-4"></div>
+          <p className="text-slate-400">Loading...</p>
+        </div>
+      </div>
+    );
+  }
 
   const menuItems = [
     {
@@ -66,56 +78,56 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
       href: "/dashboard/services",
       badge: null,
     },
-    {
-      title: "Facebook",
-      icon: Facebook,
-      href: "/dashboard/services/facebook",
-      badge: null,
-      connected: false,
-    },
-    {
-      title: "Instagram",
-      icon: Instagram,
-      href: "/dashboard/services/instagram",
-      badge: null,
-      connected: false,
-    },
-    {
-      title: "WhatsApp",
-      icon: MessageCircle,
-      href: "/dashboard/services/whatsapp",
-      badge: null,
-      connected: false,
-    },
-    {
-      title: "Voice AI",
-      icon: Mic,
-      href: "/dashboard/services/voice-ai",
-      badge: null,
-      connected: false,
-    },
-    {
-      title: "YourMenu",
-      icon: Menu,
-      href: "/dashboard/services/yourmenu",
-      badge: null,
-      connected: false,
-    },
+    // {
+    //   title: "Facebook",
+    //   icon: Facebook,
+    //   href: "/dashboard/services/facebook",
+    //   badge: null,
+    //   connected: false,
+    // },
+    // {
+    //   title: "Instagram",
+    //   icon: Instagram,
+    //   href: "/dashboard/services/instagram",
+    //   badge: null,
+    //   connected: false,
+    // },
+    // {
+    //   title: "WhatsApp",
+    //   icon: MessageCircle,
+    //   href: "/dashboard/services/whatsapp",
+    //   badge: null,
+    //   connected: false,
+    // },
+    // {
+    //   title: "Voice AI",
+    //   icon: Mic,
+    //   href: "/dashboard/services/voice-ai",
+    //   badge: null,
+    //   connected: false,
+    // },
+    // {
+    //   title: "YourMenu",
+    //   icon: Menu,
+    //   href: "/dashboard/services/yourmenu",
+    //   badge: null,
+    //   connected: false,
+    // },
   ];
 
   const managementItems = [
-    {
-      title: "Users",
-      icon: Users,
-      href: "/dashboard/users",
-      badge: null,
-    },
-    {
-      title: "Stores",
-      icon: Store,
-      href: "/dashboard/stores",
-      badge: null,
-    },
+    // {
+    //   title: "Users",
+    //   icon: Users,
+    //   href: "/dashboard/users",
+    //   badge: null,
+    // },
+    // {
+    //   title: "Stores",
+    //   icon: Store,
+    //   href: "/dashboard/stores",
+    //   badge: null,
+    // },
     {
       title: "Subscriptions",
       icon: CreditCard,
