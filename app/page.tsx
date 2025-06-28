@@ -4,6 +4,7 @@ import Link from "next/link"
 import { ArrowRight, CheckCircle, MessageSquare, Phone, Calendar, ShoppingBag, Instagram, MessageCircle, Facebook, Mail, Building2, User, Phone as PhoneIcon, Square as SquareIcon } from "lucide-react"
 import Navbar from "@/components/navbar"
 import Footer from "@/components/footer"
+import ChatbotWidget from "@/components/chatbot-widget"
 import { useSelector } from "react-redux"
 import { RootState } from "@/lib/store"
 
@@ -316,6 +317,7 @@ export default function Home() {
       </section>
 
       <Footer />
+      <ChatbotWidget />
     </div>
   )
 }

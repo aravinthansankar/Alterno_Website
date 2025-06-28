@@ -4,6 +4,7 @@ import { setupListeners } from '@reduxjs/toolkit/query'
 import { authApi } from './services/authApi'
 import { onboardingApi } from './services/onboardingApi'
 import { squareApi } from './services/squareApi'
+import { chatbotApi } from './services/chatbotApi'
 import authReducer from './slices/authSlice'
 
 export const store = configureStore({
@@ -11,6 +12,7 @@ export const store = configureStore({
     [authApi.reducerPath]: authApi.reducer,
     [onboardingApi.reducerPath]: onboardingApi.reducer,
     [squareApi.reducerPath]: squareApi.reducer,
+    [chatbotApi.reducerPath]: chatbotApi.reducer,
     auth: authReducer,
   },
   middleware: (getDefaultMiddleware) =>
@@ -21,7 +23,8 @@ export const store = configureStore({
           '__rtkq/focused', 
           '__rtkq/unfocused',
           'onboardingApi/executeQuery/fulfilled',
-          'onboardingApi/executeMutation/fulfilled'
+          'onboardingApi/executeMutation/fulfilled',
+          'chatbotApi/executeMutation/fulfilled'
         ],
         // Ignore these field paths in all actions
         ignoredActionPaths: [
@@ -39,7 +42,9 @@ export const store = configureStore({
           'payload.*.createdAt',
           'payload.*.updatedAt',
           'payload.*.storeData.createdAt',
-          'payload.*.storeData.updatedAt'
+          'payload.*.storeData.updatedAt',
+          'meta.baseQueryMeta.request',
+          'meta.baseQueryMeta.response'
         ],
         // Ignore these paths in the state
         ignoredPaths: [
@@ -48,9 +53,11 @@ export const store = configureStore({
           `${authApi.reducerPath}.mutations`,
           `${onboardingApi.reducerPath}.queries`,
           `${onboardingApi.reducerPath}.mutations`,
+          `${chatbotApi.reducerPath}.queries`,
+          `${chatbotApi.reducerPath}.mutations`,
         ],
       },
-    }).concat(authApi.middleware, onboardingApi.middleware, squareApi.middleware),
+    }).concat(authApi.middleware, onboardingApi.middleware, squareApi.middleware, chatbotApi.middleware),
 })
 
 setupListeners(store.dispatch)
