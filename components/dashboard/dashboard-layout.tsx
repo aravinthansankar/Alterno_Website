@@ -37,6 +37,8 @@ import {
   Menu,
   LogOut,
   Store,
+  Play,
+  HelpCircle,
 } from "lucide-react";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { nullable } from "zod";
@@ -67,6 +69,12 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
       title: "Dashboard",
       icon: LayoutDashboard,
       href: "/dashboard",
+      badge: null,
+    },
+    {
+      title: "Playground",
+      icon: Play,
+      href: "/dashboard/playground",
       badge: null,
     },
   ];
@@ -132,6 +140,12 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
       title: "Subscriptions",
       icon: CreditCard,
       href: "/dashboard/subscriptions",
+      badge: null,
+    },
+    {
+      title: "Support Tickets",
+      icon: HelpCircle,
+      href: "/dashboard/support",
       badge: null,
     },
     {

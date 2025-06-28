@@ -139,54 +139,6 @@ export default function ServiceLinkPage() {
           </Card>
         ))}
       </div>
-
-      {/* Integration Tips */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Integration Tips</CardTitle>
-          <CardDescription>
-            Best practices for connecting and managing your services
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="grid gap-4 md:grid-cols-2">
-            <div className="space-y-3">
-              <h4 className="font-medium">Before Connecting</h4>
-              <ul className="space-y-2 text-sm text-muted-foreground">
-                <li className="flex items-start gap-2">
-                  <div className="w-1.5 h-1.5 rounded-full bg-primary mt-2"></div>
-                  Ensure you have admin access to your business accounts
-                </li>
-                <li className="flex items-start gap-2">
-                  <div className="w-1.5 h-1.5 rounded-full bg-primary mt-2"></div>
-                  Verify your business information is up to date
-                </li>
-                <li className="flex items-start gap-2">
-                  <div className="w-1.5 h-1.5 rounded-full bg-primary mt-2"></div>
-                  Review platform-specific requirements and permissions
-                </li>
-              </ul>
-            </div>
-            <div className="space-y-3">
-              <h4 className="font-medium">After Connecting</h4>
-              <ul className="space-y-2 text-sm text-muted-foreground">
-                <li className="flex items-start gap-2">
-                  <div className="w-1.5 h-1.5 rounded-full bg-primary mt-2"></div>
-                  Test your integrations to ensure they're working properly
-                </li>
-                <li className="flex items-start gap-2">
-                  <div className="w-1.5 h-1.5 rounded-full bg-primary mt-2"></div>
-                  Configure automated responses and workflows
-                </li>
-                <li className="flex items-start gap-2">
-                  <div className="w-1.5 h-1.5 rounded-full bg-primary mt-2"></div>
-                  Monitor your dashboard for incoming messages and bookings
-                </li>
-              </ul>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
     </div>
   );
 } 
