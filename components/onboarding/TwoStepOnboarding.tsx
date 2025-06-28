@@ -81,14 +81,14 @@ export default function TwoStepOnboarding() {
               >
                 <div
                   className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium ${
-                    currentStep >= step.id ? "bg-purple-500 text-white" : "bg-slate-700 text-slate-400"
+                    currentStep >= step.id ? "bg-amber-500 text-white" : "bg-slate-700 text-slate-400"
                   }`}
                 >
                   {step.id}
                 </div>
                 {index < steps.length - 1 && (
                   <div
-                    className={`flex-1 h-1 mx-2 ${currentStep > step.id ? "bg-purple-500" : "bg-slate-700"}`}
+                    className={`flex-1 h-1 mx-2 ${currentStep > step.id ? "bg-amber-500" : "bg-slate-700"}`}
                   />
                 )}
               </div>
@@ -119,7 +119,7 @@ export default function TwoStepOnboarding() {
                     type="button"
                     onClick={nextStep}
                     disabled={nextDisabled}
-                    className="bg-gradient-to-r from-purple-500 to-cyan-500 hover:from-purple-600 hover:to-cyan-600 text-white"
+                    className="bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-700 hover:to-orange-700 text-white"
                   >
                     Next <ChevronRight className="w-4 h-4 ml-2" />
                   </Button>

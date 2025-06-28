@@ -102,8 +102,8 @@ export default function DashboardContent({
   // Supported MCC categories (titles only)
   const supportedMccCategories = [
     { code: "7297", title: "Massage Parlors", color: "from-pink-500 to-rose-500" },
-    { code: "7298", title: "Health and Beauty Spas", color: "from-purple-500 to-indigo-500" },
-    { code: "7399", title: "Business Services", color: "from-blue-500 to-cyan-500" },
+    { code: "7298", title: "Health and Beauty Spas", color: "from-amber-500 to-orange-500" },
+    { code: "7399", title: "Business Services", color: "from-amber-500 to-orange-500" },
     { code: "5812", title: "Restaurants", color: "from-orange-500 to-red-500" },
     { code: "5814", title: "Fast Food Restaurants", color: "from-yellow-500 to-orange-500" },
     { code: "7299", title: "Dog Shop", color: "from-green-500 to-emerald-500" },
@@ -143,7 +143,7 @@ export default function DashboardContent({
       {locLoading && (
         <div className="flex justify-center py-12">
           <div className="flex items-center gap-3 text-slate-400">
-            <div className="animate-spin h-5 w-5 border-2 border-purple-500 border-t-transparent rounded-full"></div>
+            <div className="animate-spin h-5 w-5 border-2 border-amber-500 border-t-transparent rounded-full"></div>
             <span>Loading business data...</span>
           </div>
         </div>

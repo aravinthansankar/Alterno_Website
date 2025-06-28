@@ -90,7 +90,7 @@ export default function VerifyEmail() {
           <Button
             onClick={handleResendVerification}
             disabled={resendDisabled}
-            className="w-full bg-gradient-to-r from-purple-500 to-cyan-500 hover:from-purple-600 hover:to-cyan-600 text-white"
+            className="w-full bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-700 hover:to-orange-700 text-white"
           >
             {resendDisabled
               ? `Resend email in ${countdown}s`

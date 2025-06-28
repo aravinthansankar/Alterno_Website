@@ -39,7 +39,7 @@ export default function Navbar() {
                 </Link>
                 <Link
                   href="/signup"
-                  className="px-4 py-2 rounded-lg bg-red-600 text-white font-medium hover:bg-red-700 transition-all duration-200"
+                  className="px-4 py-2 rounded-lg bg-amber-600 text-white font-medium hover:bg-amber-700 transition-all duration-200"
                 >
                   Join Early Bird List
                 </Link>
@@ -47,7 +47,7 @@ export default function Navbar() {
             ) : (
               <Link
                 href="/dashboard"
-                className="px-4 py-2 rounded-lg bg-red-600 text-white font-medium hover:bg-red-700 transition-all duration-200"
+                className="px-4 py-2 rounded-lg bg-amber-600 text-white font-medium hover:bg-amber-700 transition-all duration-200"
               >
                 Dashboard
               </Link>
@@ -98,7 +98,7 @@ export default function Navbar() {
                 </Link>
                 <Link
                   href="/signup"
-                  className="block px-4 py-2 rounded-lg bg-red-600 text-white font-medium hover:bg-red-700 transition-all duration-200 w-full text-center"
+                  className="block px-4 py-2 rounded-lg bg-amber-600 text-white font-medium hover:bg-amber-700 transition-all duration-200 w-full text-center"
                   onClick={() => setIsMenuOpen(false)}
                 >
                   Join Early Bird List
@@ -107,7 +107,7 @@ export default function Navbar() {
             ) : (
               <Link
                 href="/dashboard"
-                className="block px-4 py-2 rounded-lg bg-red-600 text-white font-medium hover:bg-red-700 transition-all duration-200 w-full text-center"
+                className="block px-4 py-2 rounded-lg bg-amber-600 text-white font-medium hover:bg-amber-700 transition-all duration-200 w-full text-center"
                 onClick={() => setIsMenuOpen(false)}
               >
                 Dashboard

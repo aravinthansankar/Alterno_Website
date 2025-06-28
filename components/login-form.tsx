@@ -37,23 +37,23 @@ export default function LoginForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
+    <form onSubmit={handleSubmit} className="space-y-6">
       <div className="space-y-2">
-        <Label htmlFor="email">Email</Label>
+        <Label htmlFor="email" className="text-sm font-medium">Email</Label>
         <Input
           id="email"
           name="email"
           type="email"
-          placeholder="your@email.com"
+          placeholder="Enter your email"
           required
-          className="bg-slate-800/50 border-slate-700 focus:border-purple-500 text-white"
+          className="h-11"
         />
       </div>
 
       <div className="space-y-2">
         <div className="flex justify-between">
-          <Label htmlFor="password">Password</Label>
-          <Link href="/forgot-password" className="text-sm text-purple-400 hover:text-purple-300">
+          <Label htmlFor="password" className="text-sm font-medium">Password</Label>
+          <Link href="/forgot-password" className="text-sm text-primary hover:underline">
             Forgot password?
           </Link>
         </div>
@@ -62,16 +62,16 @@ export default function LoginForm() {
             id="password"
             name="password"
             type={showPassword ? "text" : "password"}
-            placeholder="••••••••"
+            placeholder="Enter your password"
             required
-            className="bg-slate-800/50 border-slate-700 focus:border-purple-500 text-white pr-10"
+            className="h-11 pr-10"
           />
           <button
             type="button"
-            className="absolute right-3 top-1/2 transform -translate-y-1/2 text-slate-400 hover:text-white"
+            className="absolute right-3 top-1/2 transform -translate-y-1/2 text-muted-foreground hover:text-foreground"
             onClick={() => setShowPassword(!showPassword)}
           >
-            {showPassword ? <EyeOffIcon className="h-5 w-5" /> : <EyeIcon className="h-5 w-5" />}
+            {showPassword ? <EyeOffIcon className="h-4 w-4" /> : <EyeIcon className="h-4 w-4" />}
           </button>
         </div>
       </div>
@@ -79,24 +79,10 @@ export default function LoginForm() {
       <Button
         type="submit"
         disabled={isLoading}
-        className="w-full bg-gradient-to-r from-purple-500 to-cyan-500 hover:from-purple-600 hover:to-cyan-600 text-white"
+        className="w-full h-11 bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-700 hover:to-orange-700 text-white"
       >
-        {isLoading ? "Logging in..." : "Log In"}
+        {isLoading ? "Signing in..." : "Sign in"}
       </Button>
-
-      <div className="relative flex items-center justify-center">
-        <div className="border-t border-slate-700 w-full"></div>
-        <span className="bg-slate-800/50 px-2 text-sm text-slate-400 relative z-10">or continue with</span>
-      </div>
-
-      <div className="grid grid-cols-2 gap-4">
-        <Button type="button" variant="outline" className="border-slate-700 text-white hover:bg-slate-700">
-          Google
-        </Button>
-        <Button type="button" variant="outline" className="border-slate-700 text-white hover:bg-slate-700">
-          Apple
-        </Button>
-      </div>
     </form>
   )
 }
