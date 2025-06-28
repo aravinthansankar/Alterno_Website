@@ -13,7 +13,7 @@ interface ChatResponse {
 export const chatbotApi = createApi({
   reducerPath: 'chatbotApi',
   baseQuery: fetchBaseQuery({ 
-    baseUrl: 'https://primary-prod-dd85.up.railway.app/webhook/chat',
+    baseUrl: 'https://primary-prod-dd85.up.railway.app/webhook/',
   }),
   tagTypes: ['Chat'],
   endpoints: (builder) => ({
