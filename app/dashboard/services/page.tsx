@@ -33,7 +33,7 @@ export default function ServiceLinkPage() {
       icon: Instagram,
       description: "Link your Instagram business account for direct messaging and story interactions",
       connected: false,
-      color: "from-pink-500 to-purple-500",
+      color: "from-pink-500 to-amber-500",
       features: ["Direct messaging", "Story replies", "Business insights"],
     },
     {
@@ -49,7 +49,7 @@ export default function ServiceLinkPage() {
       icon: Mic,
       description: "AI-powered voice agents for phone calls, bookings, and customer support",
       connected: false,
-      color: "from-purple-500 to-indigo-600",
+      color: "from-amber-500 to-orange-600",
       features: ["Voice calls", "Automated bookings", "24/7 support"],
     },
   ]);

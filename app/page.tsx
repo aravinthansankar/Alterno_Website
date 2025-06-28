@@ -18,11 +18,11 @@ export default function Home() {
       <section className="relative pt-32 pb-20 bg-gradient-to-b from-slate-50 to-white">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto text-center">
-            <div className="inline-block px-4 py-2 bg-red-50 text-red-600 rounded-lg font-medium mb-8">
+            <div className="inline-block px-4 py-2 bg-amber-50 text-amber-600 rounded-lg font-medium mb-8">
               Pre-Launch Special Offer
             </div>
             <h1 className="text-5xl md:text-6xl font-bold text-slate-900 mb-8 leading-tight">
-              Transform Your Business with <span className="text-red-600">AI-Powered</span> Customer Service
+              Transform Your Business with <span className="text-amber-600">AI-Powered</span> Customer Service
                 </h1>
             <p className="text-xl text-slate-600 mb-12 max-w-2xl mx-auto">
               Automate bookings, orders, and customer support with intelligent AI agents that work 24/7 across all your channels.
@@ -30,14 +30,14 @@ export default function Home() {
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
                   <Link
                 href="#contact"
-                className="inline-flex items-center justify-center px-8 py-4 rounded-lg bg-red-600 text-white font-semibold text-lg hover:bg-red-700 transition-all duration-200"
+                className="inline-flex items-center justify-center px-8 py-4 rounded-lg bg-amber-600 text-white font-semibold text-lg hover:bg-amber-700 transition-all duration-200"
                   >
                     Get Started
                     <ArrowRight className="ml-2 h-5 w-5" />
                   </Link>
                   <Link
                 href="#pricing"
-                className="inline-flex items-center justify-center px-8 py-4 rounded-lg bg-white text-slate-900 font-semibold text-lg border border-slate-200 hover:border-red-600 hover:text-red-600 transition-all duration-200"
+                className="inline-flex items-center justify-center px-8 py-4 rounded-lg bg-white text-slate-900 font-semibold text-lg border border-slate-200 hover:border-amber-600 hover:text-amber-600 transition-all duration-200"
               >
                 View Pricing
                 </Link>
@@ -57,22 +57,22 @@ export default function Home() {
           </div>
           <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
             <div className="bg-slate-50 p-8 rounded-lg border border-slate-100">
-              <div className="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center mb-6">
-                <MessageSquare className="h-6 w-6 text-red-600" />
+              <div className="w-12 h-12 bg-amber-100 rounded-lg flex items-center justify-center mb-6">
+                <MessageSquare className="h-6 w-6 text-amber-600" />
               </div>
               <h3 className="text-xl font-bold mb-4">AI Chat Support</h3>
               <p className="text-slate-600">Handle customer inquiries, bookings, and orders automatically through chat.</p>
             </div>
             <div className="bg-slate-50 p-8 rounded-lg border border-slate-100">
-              <div className="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center mb-6">
-                <Phone className="h-6 w-6 text-red-600" />
+              <div className="w-12 h-12 bg-amber-100 rounded-lg flex items-center justify-center mb-6">
+                <Phone className="h-6 w-6 text-amber-600" />
               </div>
               <h3 className="text-xl font-bold mb-4">Voice Assistant</h3>
               <p className="text-slate-600">AI-powered voice calls for seamless phone support and bookings.</p>
             </div>
             <div className="bg-slate-50 p-8 rounded-lg border border-slate-100">
-              <div className="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center mb-6">
-                <Calendar className="h-6 w-6 text-red-600" />
+              <div className="w-12 h-12 bg-amber-100 rounded-lg flex items-center justify-center mb-6">
+                <Calendar className="h-6 w-6 text-amber-600" />
               </div>
               <h3 className="text-xl font-bold mb-4">Smart Scheduling</h3>
               <p className="text-slate-600">Automated appointment booking and calendar management system.</p>
@@ -169,7 +169,7 @@ export default function Home() {
               </ul>
               <Link
                 href="#contact"
-                className="block text-center px-6 py-3 rounded-lg bg-red-600 text-white font-semibold hover:bg-red-700 transition-all duration-200"
+                className="block text-center px-6 py-3 rounded-lg bg-amber-600 text-white font-semibold hover:bg-amber-700 transition-all duration-200"
               >
                 Get Started
               </Link>
@@ -196,7 +196,7 @@ export default function Home() {
               </ul>
               <Link
                 href="#contact"
-                className="block text-center px-6 py-3 rounded-lg bg-red-600 text-white font-semibold hover:bg-red-700 transition-all duration-200"
+                className="block text-center px-6 py-3 rounded-lg bg-amber-600 text-white font-semibold hover:bg-amber-700 transition-all duration-200"
               >
                 Get Started
               </Link>
@@ -223,7 +223,7 @@ export default function Home() {
               </ul>
               <Link
                 href="#contact"
-                className="block text-center px-6 py-3 rounded-lg bg-red-600 text-white font-semibold hover:bg-red-700 transition-all duration-200"
+                className="block text-center px-6 py-3 rounded-lg bg-amber-600 text-white font-semibold hover:bg-amber-700 transition-all duration-200"
               >
                 Get Started
               </Link>
@@ -244,7 +244,7 @@ export default function Home() {
           <div className="flex justify-center">
             <div className="w-full max-w-xl bg-white rounded-2xl shadow-xl p-10 border border-slate-100">
               <div className="flex flex-col items-center mb-8">
-                <User className="h-10 w-10 text-red-500 mb-2" />
+                <User className="h-10 w-10 text-amber-500 mb-2" />
                 <span className="text-xl font-semibold text-slate-800">Contact Sales</span>
               </div>
               <form className="space-y-7">
@@ -254,7 +254,7 @@ export default function Home() {
                     type="text"
                     id="name"
                     name="name"
-                    className="block w-full px-4 py-4 border border-slate-200 rounded-xl bg-white text-slate-900 text-lg focus:outline-none focus:border-red-500 focus:ring-2 focus:ring-red-100 transition-all"
+                    className="block w-full px-4 py-4 border border-slate-200 rounded-xl bg-white text-slate-900 text-lg focus:outline-none focus:border-amber-500 focus:ring-2 focus:ring-amber-100 transition-all"
                     placeholder="John Smith"
                     required
                   />
@@ -265,7 +265,7 @@ export default function Home() {
                     type="text"
                     id="company"
                     name="company"
-                    className="block w-full px-4 py-4 border border-slate-200 rounded-xl bg-white text-slate-900 text-lg focus:outline-none focus:border-red-500 focus:ring-2 focus:ring-red-100 transition-all"
+                    className="block w-full px-4 py-4 border border-slate-200 rounded-xl bg-white text-slate-900 text-lg focus:outline-none focus:border-amber-500 focus:ring-2 focus:ring-amber-100 transition-all"
                     placeholder="Your Company"
                     required
                   />
@@ -276,7 +276,7 @@ export default function Home() {
                     type="email"
                     id="email"
                     name="email"
-                    className="block w-full px-4 py-4 border border-slate-200 rounded-xl bg-white text-slate-900 text-lg focus:outline-none focus:border-red-500 focus:ring-2 focus:ring-red-100 transition-all"
+                    className="block w-full px-4 py-4 border border-slate-200 rounded-xl bg-white text-slate-900 text-lg focus:outline-none focus:border-amber-500 focus:ring-2 focus:ring-amber-100 transition-all"
                     placeholder="you@company.com"
                     required
                   />
@@ -287,7 +287,7 @@ export default function Home() {
                     type="tel"
                     id="phone"
                     name="phone"
-                    className="block w-full px-4 py-4 border border-slate-200 rounded-xl bg-white text-slate-900 text-lg focus:outline-none focus:border-red-500 focus:ring-2 focus:ring-red-100 transition-all"
+                    className="block w-full px-4 py-4 border border-slate-200 rounded-xl bg-white text-slate-900 text-lg focus:outline-none focus:border-amber-500 focus:ring-2 focus:ring-amber-100 transition-all"
                     placeholder="+1 (555) 000-0000"
                     required
                   />
@@ -298,14 +298,14 @@ export default function Home() {
                     id="message"
                     name="message"
                     rows={4}
-                    className="block w-full px-4 py-4 border border-slate-200 rounded-xl bg-white text-slate-900 text-lg focus:outline-none focus:border-red-500 focus:ring-2 focus:ring-red-100 transition-all"
+                    className="block w-full px-4 py-4 border border-slate-200 rounded-xl bg-white text-slate-900 text-lg focus:outline-none focus:border-amber-500 focus:ring-2 focus:ring-amber-100 transition-all"
                     placeholder="Tell us about your business and how we can help..."
                     required
                   ></textarea>
               </div>
                 <button
                   type="submit"
-                  className="w-full px-6 py-4 bg-gradient-to-r from-red-500 to-red-600 text-white font-bold rounded-xl text-lg shadow-md hover:from-red-600 hover:to-red-700 transition-all duration-200"
+                  className="w-full px-6 py-4 bg-gradient-to-r from-amber-500 to-amber-600 text-white font-bold rounded-xl text-lg shadow-md hover:from-amber-600 hover:to-amber-700 transition-all duration-200"
                 >
                   Submit Request
                 </button>

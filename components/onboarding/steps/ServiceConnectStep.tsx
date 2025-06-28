@@ -51,13 +51,11 @@ export default function ServiceConnectStep() {
         {services.map((service) => (
           <div
             key={service.id}
-            className={`border rounded-lg p-4 cursor-pointer transition-colors
-              ${
-                service.id === selectedService && service.status === "active"
-                  ? "border-purple-500 bg-purple-500/10"
-                  : "border-slate-600 hover:border-purple-500"
-              }
-              ${service.status !== "active" && "opacity-60 cursor-not-allowed"}
+            className={`p-4 rounded-xl border-2 cursor-pointer transition-all ${
+              selectedService === service.id
+                ? "border-amber-500 bg-amber-500/10"
+                : "border-slate-600 hover:border-amber-500"
+            } ${service.status !== "active" && "opacity-60 cursor-not-allowed"}
             `}
             onClick={() => handleSelect(service.id)}
           >
